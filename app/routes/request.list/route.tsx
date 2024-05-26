@@ -26,13 +26,23 @@ interface Request {
     if (response.ok) {
       const data: Request[] = await response.json();
       return json(data);
+    } else if (response.status === 404) {
+      // Return a specific error message for NOT_FOUND status
+      return json({ error: 'Sorry, there is no request available.' });
+    } else if (response.status === 500) {
+      // Return a specific error message for Internal Server Error
+      return json({ error: 'Sorry, there was an internal server error.' });
     } else {
       throw new Error(`Error fetching data: ${response.statusText}`);
     }
   };
   
   export default function RequestListPage() {
-    let data: Request[] = useLoaderData();
+    let data: Request[] | { error: string } = useLoaderData();
+  
+    if ('error' in data) {
+      return <div>{data.error}</div>;
+    }
   
     return (
       <div>
