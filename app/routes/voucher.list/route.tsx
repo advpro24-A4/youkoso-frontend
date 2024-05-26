@@ -16,7 +16,7 @@ interface Voucher {
 export async function loader({ request }: LoaderFunctionArgs) {
 
     try {
-        let target_url = `http://localhost:8080/voucher/api/read-all`;
+        let target_url = `http://34.122.230.153/voucher/api/read-all`;
         const response = await fetch(target_url);
         const voucherData: Voucher[] = await response.json();
         return { voucherData };
